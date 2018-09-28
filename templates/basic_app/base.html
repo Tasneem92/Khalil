@@ -1,9 +1,13 @@
+
+{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
   </head>
   <body>
@@ -26,7 +30,7 @@
 </div>
     </nav>
 
-    <div class="container">
+    <div class="container-fluid">
       {% block body_block %}
 
       {% endblock %}
