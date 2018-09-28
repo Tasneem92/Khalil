@@ -1,0 +1,44 @@
+.navbar {
+    margin-bottom: 0px;
+}
+
+.image-home {
+    background-image: url('bottled-water-delivery_water_hero-fullsize.jpg');
+    height: 871px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -8;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+}
+
+.topbakground {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    -webkit-background-color: rgba(0, 0, 0, 0.6);
+    -moz-background-color: rgba(0, 0, 0, 0.6);
+    -o-background-color: rgba(0, 0, 0, 0.6);
+    background-size: cover;
+    min-height: 350px;
+    width: 70%;
+}
+
+.login-form{
+    margin-top: 150px;
+    padding-left: 190px;
+
+}
+.about{
+    padding-right: 20px;
+    padding-left: 20px;
+    font-size: 16px;
+}
+.login-padding{
+    padding-left: 20px;
+    padding-top: 35px;
+    padding-right: 20px;
+}
+.padding-top-for-text{
+    padding-top: 50px;
+}
