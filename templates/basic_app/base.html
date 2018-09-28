@@ -1,41 +1,60 @@
-
 {% load staticfiles %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
+<head>
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+            integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+            integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+            integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<nav class='navbar navbar-default navbar-static-top'>
+    <div class="container">
+        {% if user.is_authenticated %}
+            <ul class="nav navbar-nav">
+                <li><a class=navbar-brand href="{% url 'basic_app:home' %}">Home</a></li>
+                <li><a class=navbar-link href="{% url 'admin:index' %}">+ create order</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">My Account <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+                <li><a class=navbar-link>+009627985412258</a></li>
+                {% if user.is_authenticated %}
+                    <li><a class='navbar-link' href="{% url 'logout' %}">Logout</a></li>
+                {% endif %}
 
-  </head>
-  <body>
-    <nav class = 'navbar navbar-default navbar-static-top'>
-<div class="container">
-
-    <ul class ="nav navbar-nav">
-      <li> <a class = navbar-brand href="{% url 'index' %}">Home</a> </li>
-      <li> <a class = navbar-link href="{% url 'admin:index' %}">Admin</a> </li>
-      <li> <a class = navbar-link href="{% url 'basic_app:register' %}">Register</a> </li>
-
-      {# authenticate and user from views #}
-      {% if user.is_authenticated %}
-      <li> <a class='navbar-link' href="{% url 'logout' %}">Logout</a> </li>
-      {% else %}
-      <li> <a class='navbar-link' href="{% url 'basic_app:user_login' %}">Login</a> </li>
-      {% endif %}
-
-    </ul>
-</div>
-    </nav>
-
-    <div class="container-fluid">
-      {% block body_block %}
-
-      {% endblock %}
-
+            </ul>
+        {% else %}
+            <h3>Alhambra</h3>
+        {% endif %}
     </div>
+</nav>
 
-  </body>
+<div class="container-fluid">
+    {% block body_block %}
+
+    {% endblock %}
+
+</div>
+
+</body>
 </html>

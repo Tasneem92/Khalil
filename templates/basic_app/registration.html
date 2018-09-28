@@ -1,31 +1,40 @@
 {% extends "basic_app/base.html" %}
-{% load staticfiles %}
-
 {% block body_block %}
-  <div class="container">
-    <div class="jumbotron">
-      {% if registered %}
-      {# #this registered is used in views.py #}
-
-        <h1>Thank you for registering!</h1>
-      {% else %}
-        <h1>Register Here</h1>
-        <h3>Just fill out the form.</h3>
-        {# for the images uploading to work we used enctype #}
-
-        <form enctype="multipart/form-data" method="POST">
-          {% csrf_token %}
-          {{ user_form.as_p }}
-          {{ profile_form.as_p }}
-          {# the userform and profile form will be defined within the context dictionary in views #}
-
-          <input type="submit" name="" value="Register">
-        </form>
-
-      {% endif %}
-
+    <div class="row">
+        <div class="col-12 image-home text-center">
+            <div class="topbakground_registration">
+                {% if registered %}
+                    {# #this registered is used in views.py #}
+                    <h1>Thank you for registering!</h1>
+                {% else %}
+                    <h1>Register Here</h1>
+                    <h3>Just fill out the form.</h3>
+                    {# for the images uploading to work we used enctype #}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form enctype="multipart/form-data" method="POST">
+                                {% csrf_token %}
+                                <table>
+                                    {% for field in user_form %}
+                                        <tr>
+                                            <td class="registraion_field">{{ field.label_tag }}</td>
+                                            <td>{{ field }}</td>
+                                            {% for error in field.errors %}
+                                                <p style="color: red">{{ error }}</p>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                                <a href="{% url 'basic_app:index' %}" type="submit" value="Login"
+                                   style="color:white;padding-right: 50px"
+                                   class="btn btn-lg btn-link pull-right">Login</a>
+                                <input class="btn btn-lg btn-primary pull-right" type="submit" name=""
+                                       value="Register">
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
-
-  </div>
-
 {% endblock %}

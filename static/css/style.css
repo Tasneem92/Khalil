@@ -42,3 +42,22 @@
 .padding-top-for-text{
     padding-top: 50px;
 }
+
+.topbakground_registration {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    -webkit-background-color: rgba(0, 0, 0, 0.6);
+    -moz-background-color: rgba(0, 0, 0, 0.6);
+    -o-background-color: rgba(0, 0, 0, 0.6);
+    background-size: cover;
+    min-height: 490px;
+    width: 50%;
+    margin-left: 25%;
+    padding-top: 50px;
+}
+table td{
+    padding-top: 50px;
+}
+.registraion_field{
+    padding-left: 320px;
+}

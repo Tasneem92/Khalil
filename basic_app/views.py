@@ -11,7 +11,8 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     return render(request,'basic_app/index.html')
 
-
+def home(request):
+    return render(request, 'basic_app/home.html')
 #decorator to require a user to be logged in in order to logout
 @login_required
 def user_logout(request):
@@ -87,7 +88,7 @@ def user_login(request):
 
                 #login is imported from django
                 login(request,user)
-                return HttpResponseRedirect(reverse('index'))
+                return render(request, 'basic_app/home.html')
 
             else:
                 return HttpResponse("Account not active")
