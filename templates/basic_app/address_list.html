@@ -1,0 +1,93 @@
+{% extends "basic_app/base.html" %}
+{% block body_block %}
+    <div class="row text-center">
+        <div class="col-12">
+            <button data-backdrop="static" data-keyboard="false" class="navbar-link btn " data-toggle="modal"
+                    data-target="#myModal">Create New Address
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        {% for address in address_list %}
+            <div class="col-md-4">
+                <div class="address">
+                    <h1>{{ address.user.user.username }} {{ address.pk }}</h1>
+                    <div class="date">
+                        <p>City: {{ address.city }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Create your Address</h4>
+                </div>
+                <form method="POST" action="{% url 'basic_app:address' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <table>
+                            {% for field in address %}
+                                <tr>
+                                    <td>{{ field.label_tag }}</td>
+                                    <td>
+                                        {{ field }}
+                                    </td>
+                                    {% for error in field.errors %}
+                                        <p style="color: red">{{ error }}</p>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class='btn btn-primary' value="Save">
+                        <a class="btn " data-dismiss="modal">Close</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        <!-- Modal -->
+    <div id="createorder" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Create your Address</h4>
+                </div>
+                <form method="POST" action="{% url 'basic_app:address' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <table>
+                            {% for field in order %}
+                                <tr>
+                                    <td>{{ field.label_tag }}</td>
+                                    <td>
+                                        {{ field }}
+                                    </td>
+                                    {% for error in field.errors %}
+                                        <p style="color: red">{{ error }}</p>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class='btn btn-primary' value="Save">
+                        <a class="btn " data-dismiss="modal">Close</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

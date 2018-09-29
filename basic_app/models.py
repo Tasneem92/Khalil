@@ -1,25 +1,29 @@
+import datetime
 from django.db import models
-from django.conf import settings
 from django.contrib.auth.models import User
-#user here is the default and the class under is adding to it
+from django.urls import reverse
+
+
 # Create your models here.
 
-class UserProfileInfo(models.Model):
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default="")
+    city = models.CharField(max_length=255, blank=False, null=False)
+    line1 = models.CharField(max_length=255, blank=False, null=False)
+    line2 = models.CharField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(max_length=14, blank=False, null=False)
 
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
-#to add more attributes - extending the class
-    #additional classes
-    portfolio_site = models.URLField(blank=True)
-    profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
+    def get_absolute_url(self):
+        return reverse("basic_app:order_list", kwargs={'pk': self.pk})
 
-#to print
-    def __str__(self):
-        return self.user.username
 
-#installed pillow to work with images
+class Order(models.Model):
+    quantity = models.IntegerField(default=1)
+    date_placed = models.DateTimeField(db_index=True, default=datetime.datetime.now)
+    delivery_date = models.DateTimeField(db_index=True)
+    orderedBy = models.ForeignKey(User, on_delete=models.CASCADE, default="")
+    total_incl_delivery = models.DecimalField(decimal_places=2, max_digits=12, default=0.0)
+    billing_address = models.ForeignKey(Address, on_delete=models.CASCADE)
 
-#ordering
-class UserOrders(models.Model):
-    user_order = models.IntegerField()
-    orderedBy = models.ForeignKey(UserProfileInfo, on_delete=models.CASCADE, null=True)
-#    orderedBy = models.ForeignKey(UserProfileInfo, on_delete=models.CASCADE,null=True,blank=True,default="Khoury",related_name="orders")
+    def get_absolute_url(self):
+        return reverse("basic_app:order_detail", kwargs={'pk': self.pk})

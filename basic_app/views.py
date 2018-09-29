@@ -1,19 +1,75 @@
+import datetime
+from django.contrib.auth.models import User
 from django.shortcuts import render
-from basic_app.forms import UserForm,UserProfileInfoForm,OrderForm
-from basic_app.models import UserOrders
+from django.views.generic import UpdateView, DeleteView, ListView
+from basic_app.forms import UserForm, OrderForm, AddressForm
+from basic_app.models import Order, Address
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
-#for a view to require login
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 # Create your views here.
 def index(request):
-    return render(request,'basic_app/index.html')
+    return render(request, 'basic_app/index.html')
 
+
+@login_required
 def home(request):
-    return render(request, 'basic_app/home.html')
-#decorator to require a user to be logged in in order to logout
+    order = OrderForm()
+    return render(request, 'basic_app/home.html', {'order': order})
+
+
+def register(request):
+    registered = False
+    if request.method == "POST":
+        user_form = UserForm(data=request.POST)
+        if user_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            registered = True
+        else:
+            print(user_form.errors)
+    else:
+        user_form = UserForm()
+
+    return render(request, 'basic_app/registration.html',
+                  {'user_form': user_form,
+                   'registered': registered})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(reverse('basic_app:home'))
+            else:
+                return HttpResponse("Account not active")
+        else:
+            print("someone tried to login and failed")
+            print("Username: {} and password {}".format(username, password))
+            return HttpResponseRedirect(reverse('index'))
+    else:
+        return render(request, 'basic_app/login.html', {})
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = UserForm
+    model = User
+
+    def get_success_url(self):
+        return reverse('index')
+
+
 @login_required
 def user_logout(request):
     logout(request)
@@ -21,83 +77,64 @@ def user_logout(request):
 
 
 @login_required
+def address(request):
+    form = AddressForm()
+    if request.method == "POST":
+        address_form = AddressForm(request.POST)
+        if address_form.is_valid():
+            address = address_form.save(commit=False)
+            user = User.objects.get(id=request.user.id)
+            address.user = user
+            address.save()
+            return HttpResponseRedirect(reverse('basic_app:address_list'))
+    return render(request, 'basic_app/address_list.html', {'form': form})
+
+
+class AddressListView(LoginRequiredMixin, ListView):
+    model = Address
+    def get_queryset(self):
+        return Address.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(AddressListView, self).get_context_data(**kwargs)
+        context['address'] = AddressForm()
+        context['order'] = OrderForm()
+        return context
+
+class AddressUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = AddressForm
+    model = Address
+
+    def get_success_url(self):
+        return reverse('basic_app:address_list')
+
+
+class AddressDeleteView(LoginRequiredMixin, DeleteView):
+    model = Address
+    success_url = reverse_lazy('basic_app:address_list')
+
+
+@login_required
 def order(request):
     form = OrderForm()
-    #ordered = False
     if request.method == "POST":
-        form = OrderForm(request.POST)
-
-        if form.is_valid():
-            form.save(commit = True)
-            return HttpResponseRedirect(reverse('index'))
-            #return index(request)
-        else:
-            print('Form invalid')
-
-    return render(request,'basic_app/order.html',{'form':form})
+        order_form = OrderForm(request.POST)
+        if order_form.is_valid():
+            order = order_form.save(commit=False)
+            user = User.objects.get(id=request.user.id)
+            order.orderedBy = user
+            order.save()
+            return HttpResponseRedirect(reverse('basic_app:order_list'))
+    return render(request, 'basic_app/order.html', {'form': form})
 
 
+class OrderDeleteView(LoginRequiredMixin, DeleteView):
+    model = Order
+    success_url = reverse_lazy('basic_app:order_list')
 
 
-def register(request):
-        registered = False
-        if request.method == "POST":
-            user_form = UserForm(data=request.POST)
-            profile_form = UserProfileInfoForm(data=request.POST)
+class OrderListView(LoginRequiredMixin, ListView):
+    model = Order
 
-            if user_form.is_valid() and profile_form.is_valid():
-                user=user_form.save()
-                #the hasing of the pw
-                user.set_password(user.password)
-                user.save()
-
-                profile = profile_form.save(commit = False)
-                profile.user = user
-
-                if 'profile_pic' in request.FILES:
-                    profile.profile_pic = request.FILES['profile_pic']
-#the key profile_pic is what we defined in the models
-                profile.save()
-                registered = True
-            else:
-                print(user_form.errors,profile_form.errors)
-        else:
-            user_form = UserForm()
-            profile_form = UserProfileInfoForm()
-
-        return render(request,'basic_app/registration.html',
-        {'user_form':user_form,
-        'profile_form':profile_form,
-        'registered':registered})
-
-
-def user_login(request):
-
-    if request.method == 'POST':
-
-        #grabbing
-        #username in green is the same name we gave in the form in login.html
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-#it will automatically authenticate for us
-        user = authenticate(username = username, password= password)
-
-        if user:
-            if user.is_active:
-
-                #login is imported from django
-                login(request,user)
-                return render(request, 'basic_app/home.html')
-
-            else:
-                return HttpResponse("Account not active")
-
-        else:
-            #this printing is in our console / what they tried to login with
-            print("someone tried to login and failed")
-            print ("Username: {} and password {}".format(username,password))
-            return HttpResponse("invalid login details")
-    else:
-        #if user did not submit anything
-        return render(request,'basic_app/login.html',{})
+    def get_queryset(self):
+        return Order.objects.filter(date_placed__lte=datetime.datetime.now()).order_by('-date_placed')

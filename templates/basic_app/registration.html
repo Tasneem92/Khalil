@@ -6,6 +6,9 @@
                 {% if registered %}
                     {# #this registered is used in views.py #}
                     <h1>Thank you for registering!</h1>
+                    <a href="{% url 'index' %}" type="submit" value="Login"
+                                   style="color:white;padding-right: 50px"
+                                   class="btn btn-lg btn-link pull-right">Login</a>
                 {% else %}
                     <h1>Register Here</h1>
                     <h3>Just fill out the form.</h3>
@@ -25,7 +28,7 @@
                                         </tr>
                                     {% endfor %}
                                 </table>
-                                <a href="{% url 'basic_app:index' %}" type="submit" value="Login"
+                                <a href="{% url 'index' %}" type="submit" value="Login"
                                    style="color:white;padding-right: 50px"
                                    class="btn btn-lg btn-link pull-right">Login</a>
                                 <input class="btn btn-lg btn-primary pull-right" type="submit" name=""

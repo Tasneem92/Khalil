@@ -2,21 +2,13 @@
 
 {% block body_block %}
 
-<div class="jumbotron">
-  <h1>Please place your order</h1>
-
-    <form method="POST" >
-
-      {{ form.as_p }}
-      {% csrf_token %}
-
-      {# A more "HTML" way of creating the login form#}
-      <label for="order">Quantity:</label>
-       {# <input type="number" name="Quantity" placeholder="Quantity"> #}
-      <input type="submit" class = 'btn btn-primary'  value="Place Order">
-
-    </form>
-
-</div>
+   <div class="jumbotron">
+       <h1>Please place your order</h1>
+       <form method="POST">
+           {{ form.as_p }}
+           {% csrf_token %}
+           <input type="submit" class='btn btn-primary' value="Place Order">
+       </form>
+   </div>
 
 {% endblock %}

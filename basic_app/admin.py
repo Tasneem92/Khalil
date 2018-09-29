@@ -1,6 +1,6 @@
 from django.contrib import admin
-from basic_app.models import UserProfileInfo, UserOrders
+from basic_app.models import Address, Order
 # Register your models here.
 
-admin.site.register(UserProfileInfo)
-admin.site.register(UserOrders)
+admin.site.register(Address)
+admin.site.register(Order)
