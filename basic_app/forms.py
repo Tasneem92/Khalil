@@ -35,3 +35,10 @@ class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
         fields = ('city', 'line1', 'line2', 'phone_number')
+
+    def __init__(self, *args, **kwargs):
+        super(AddressForm, self).__init__(*args, **kwargs)
+        self.fields['city'].widget.attrs['class'] = 'form-control'
+        self.fields['line1'].widget.attrs['class'] = 'form-control'
+        self.fields['line2'].widget.attrs['class'] = 'form-control'
+        self.fields['phone_number'].widget.attrs['class'] = 'form-control'

@@ -1,24 +1,61 @@
 {% extends "basic_app/base.html" %}
 {% block body_block %}
-    <div class="row text-center">
-        <div class="col-12">
-            <button data-backdrop="static" data-keyboard="false" class="navbar-link btn " data-toggle="modal"
+    <div class="row image-address">
+        <div class="col-12 add-new-address">
+            <button data-backdrop="static" data-keyboard="false" class="btn btn-success" data-toggle="modal"
                     data-target="#myModal">Create New Address
             </button>
         </div>
-    </div>
-    <div class="row">
         {% for address in address_list %}
-            <div class="col-md-4">
+            <div class="col-12 col-md-4 list-address">
                 <div class="address">
-                    <h1>{{ address.user.user.username }} {{ address.pk }}</h1>
+                    <h1>Address {{ forloop.counter }}</h1>
+                    <h3>{{ address.user.first_name }}</h3>
+                    <h3>{{ address.user.last_name }}</h3>
+                    <h3>{{ address.pk }}</h3>
                     <div class="date">
                         <p>City: {{ address.city }}</p>
+                        <p>Line 1: {{ address.line1 }}</p>
+                        <p>Line 2: {{ address.line2 }}</p>
+                        <p>Phone Number: {{ address.phone_number }}</p>
+                    </div>
+                    <div class="date pull-right">
+                        <a data-backdrop="static" data-keyboard="false" data-toggle="modal"
+                           data-target="#{{ address.id }}" style="color:red"
+                           class="btn btn-lg btn-link pull-right">Delete</a>
+                        <a href="{% url 'basic_app:address_update' pk=address.pk %} " value="Login"
+                           class="btn btn-lg btn-primary pull-right">Edit</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div id="{{ address.id }}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h3 class="modal-title">Delete your Address</h3>
+                        </div>
+                        <form method="POST" action="{% url 'basic_app:address_delete' pk=address.pk %}">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                <h4>Are you sure you want to delete this address?</h4>
+                                <p>City: {{ address.city }}</p>
+                                <p>Line 1: {{ address.line1 }}</p>
+                                <p>Line 2: {{ address.line2 }}</p>
+                                <p>Phone Number: {{ address.phone_number }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class='btn btn-primary' value="Delete">
+                                <a class="btn " data-dismiss="modal">Cancel</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         {% endfor %}
-
     </div>
     <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog">
@@ -35,41 +72,6 @@
                     <div class="modal-body">
                         <table>
                             {% for field in address %}
-                                <tr>
-                                    <td>{{ field.label_tag }}</td>
-                                    <td>
-                                        {{ field }}
-                                    </td>
-                                    {% for error in field.errors %}
-                                        <p style="color: red">{{ error }}</p>
-                                    {% endfor %}
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="submit" class='btn btn-primary' value="Save">
-                        <a class="btn " data-dismiss="modal">Close</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-        <!-- Modal -->
-    <div id="createorder" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Create your Address</h4>
-                </div>
-                <form method="POST" action="{% url 'basic_app:address' %}">
-                    {% csrf_token %}
-                    <div class="modal-body">
-                        <table>
-                            {% for field in order %}
                                 <tr>
                                     <td>{{ field.label_tag }}</td>
                                     <td>

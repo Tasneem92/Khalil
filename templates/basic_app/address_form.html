@@ -1,15 +1,28 @@
 {% extends "basic_app/base.html" %}
 {% block body_block %}
-   <div class="row">
-       <div class="col-12">
-           <form class="address-form" method="POST">
-               {% csrf_token %}
-               {{ form.as_p }}
-               <button type="submit" class='save btn btn-default'>Save</button>
-           </form>
+    <div class="row image-address-update">
+        <div class="col-12 address-update">
+        <h1>Update Your Address</h1>
+            <form class="address-form" method="POST">
+                {% csrf_token %}
+                <table>
+                    {% for field in form %}
+                        <tr>
+                            <td>{{ field.label_tag }}</td>
+                            <td>
+                                {{ field }}
+                            </td>
+                            {% for error in field.errors %}
+                                <p style="color: red">{{ error }}</p>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+                <button type="submit" class='save btn btn-primary'style="margin-top: 50px">Save</button>
+            </form>
 
-           <script>var editors = new MediumEditor('.editable');</script>
-           <!-- .editable class is attached here as a widget -->
-       </div>
-   </div>
+            <script>var editors = new MediumEditor('.editable');</script>
+            <!-- .editable class is attached here as a widget -->
+        </div>
+    </div>
 {% endblock %}

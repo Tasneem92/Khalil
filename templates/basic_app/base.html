@@ -40,7 +40,7 @@
                         <li><a href="#">Account Setting</a></li>
                     </ul>
                 </li>
-                <li><a class=navbar-link>+009627985412258</a></li>
+                <li><a class=navbar-link>+9627985412258</a></li>
                 {% if user.is_authenticated %}
                     <li><a class='navbar-link' href="{% url 'logout' %}">Logout</a></li>
                 {% endif %}
@@ -58,5 +58,40 @@
     {% endblock %}
 
 </div>
+        <!-- Modal -->
+    <div id="createorder" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Create your Address</h4>
+                </div>
+                <form method="POST" action="{% url 'basic_app:address' %}">
+                    {% csrf_token %}
+                    <div class="modal-body ">
+                        <table>
+                            {% for field in order %}
+                                <tr>
+                                    <td>{{ field.label_tag }}</td>
+                                    <td>
+                                        {{ field }}
+                                    </td>
+                                    {% for error in field.errors %}
+                                        <p style="color: red">{{ error }}</p>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class='btn btn-primary' value="Save">
+                        <a class="btn " data-dismiss="modal">Close</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

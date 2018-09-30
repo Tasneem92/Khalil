@@ -107,6 +107,10 @@ class AddressUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('basic_app:address_list')
+    def get_context_data(self, **kwargs):
+        context = super(AddressUpdateView, self).get_context_data(**kwargs)
+        context['order'] = OrderForm()
+        return context
 
 
 class AddressDeleteView(LoginRequiredMixin, DeleteView):
