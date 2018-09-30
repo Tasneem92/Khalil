@@ -61,7 +61,7 @@ def user_login(request):
             print("Username: {} and password {}".format(username, password))
             return HttpResponseRedirect(reverse('index'))
     else:
-        return render(request, 'basic_app/login.html', {})
+        return render(request, 'basic_app/index.html', {})
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):

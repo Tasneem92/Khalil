@@ -22,11 +22,11 @@ from django.conf import settings
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
-                  url(r'^$', views.index, name='index'),
+                  url(r'^index/$', views.index, name='index'),
                   url(r'^u/', include('basic_app.urls')),
                   url(r'^logout/$', views.user_logout, name='logout'),
 
                   # login/register
                   url(r'^register/$', views.register, name='register'),
-                  url(r'^login/$', views.user_login, name='user_login'),
+                  url(r'^$', views.user_login, name='user_login'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
