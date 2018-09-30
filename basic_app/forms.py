@@ -6,7 +6,7 @@ from basic_app.models import Order, Address
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
-    class Meta():
+    class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password')
 
@@ -18,18 +18,23 @@ class UserForm(forms.ModelForm):
         self.fields['first_name'].widget.attrs['class'] = 'form-control'
         self.fields['last_name'].widget.attrs['class'] = 'form-control'
 
-
 class OrderForm(forms.ModelForm):
+
     class Meta:
         model = Order
-        fields = ('quantity', 'delivery_date', 'billing_address')
+        fields = ('quantity','delivery_date', 'billing_address')
+        widgets = {
+            'delivery_date': forms.DateInput(format=('%m/%d/%Y'),
+                                             attrs={'class': 'form-control',
+                                                    'type': 'date'}),
+        }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user ,*args, **kwargs):
         super(OrderForm, self).__init__(*args, **kwargs)
         self.fields['quantity'].widget.attrs['class'] = 'form-control'
-        self.fields['delivery_date'].widget.attrs['class'] = 'form-control'
-        self.fields['delivery_date'].widget.attrs['id'] = 'datepicker'
         self.fields['billing_address'].widget.attrs['class'] = 'form-control'
+        self.fields['billing_address'].queryset = Address.objects.filter(user=user)
+
 
 class AddressForm(forms.ModelForm):
     class Meta:

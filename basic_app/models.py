@@ -16,6 +16,10 @@ class Address(models.Model):
     def get_absolute_url(self):
         return reverse("basic_app:order_list", kwargs={'pk': self.pk})
 
+    def __str__(self):
+        return " City :" + self.city+" , " + "Line: "+self.line1
+
+
 
 class Order(models.Model):
     quantity = models.IntegerField(default=1)

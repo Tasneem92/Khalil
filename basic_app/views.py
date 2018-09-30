@@ -14,13 +14,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 def index(request):
-    return render(request, 'basic_app/index.html')
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('basic_app:home'))
+    else:
+        return render(request, 'basic_app/index.html')
 
 
 @login_required
 def home(request):
-    order = OrderForm()
-    return render(request, 'basic_app/home.html', {'order': order})
+    return render(request, 'basic_app/home.html', {})
 
 
 def register(request):
@@ -69,6 +71,18 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('index')
 
+    def user_passes_test(self, request):
+        if request.user.is_authenticated:
+            self.object = self.get_object()
+            return self.object == request.user
+        return False
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.user_passes_test(request):
+            return HttpResponseRedirect(reverse('basic_app:user_update',kwargs={'pk': request.user.id}))
+        return super(UserUpdateView, self).dispatch(
+            request, *args, **kwargs)
+
 
 @login_required
 def user_logout(request):
@@ -98,7 +112,6 @@ class AddressListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(AddressListView, self).get_context_data(**kwargs)
         context['address'] = AddressForm()
-        context['order'] = OrderForm()
         return context
 
 class AddressUpdateView(LoginRequiredMixin, UpdateView):
@@ -107,10 +120,6 @@ class AddressUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('basic_app:address_list')
-    def get_context_data(self, **kwargs):
-        context = super(AddressUpdateView, self).get_context_data(**kwargs)
-        context['order'] = OrderForm()
-        return context
 
 
 class AddressDeleteView(LoginRequiredMixin, DeleteView):
@@ -141,4 +150,9 @@ class OrderListView(LoginRequiredMixin, ListView):
     model = Order
 
     def get_queryset(self):
-        return Order.objects.filter(date_placed__lte=datetime.datetime.now()).order_by('-date_placed')
+        return Order.objects.filter(orderedBy=self.request.user.id,date_placed__lte=datetime.datetime.now()).order_by('-date_placed')
+
+def get_form_kwargs(self):
+   kwargs = super(OrderForm, self).get_form_kwargs()
+   kwargs.update({'user': self.request.user})
+   return kwargs

@@ -2,21 +2,37 @@
 {% load order_tags %}
 
 {% block body_block %}
-   <div class="centerstage row">
-       <div class="col-12">
-           {% for order in order_list %}
-               <div class="order">
-                   <h1>{{ order.orderedBy.username }}</h1>
-                   <div class="date">
-                       <p>Placed on: {{ order.date_placed |date:"D M Y" }}</p>
-                   </div>
-                   <div>
-                       {% order_total order.pk %}
-                   </div>
-               </div>
-           {% endfor %}
-           <a class='btn btn-primary' href="{% url 'basic_app:user_update' pk=request.user.id %}">Update</a>
+    <div class="centerstage row">
+        <div class="col-12 text-center">
+            <h1>
+                Thank you for choosing <strong><i>Alhambra</i></strong>!
+            </h1>
+            {% if order_list %}
+                <h2>
+                    YOUR ORDERS
+                </h2>
+            {% else %}
+                <h2>
+                    PLEASE MAKE YOUR ORDER
+                </h2>
+            {% endif %}
+        </div>
+        {% for order in order_list %}
+            <div class="col-12 col-md-4">
 
-       </div>
-   </div>
+                <div class="order-list">
+                    <h3>Placed on: {{ order.date_placed |date:"D M Y" }}</h3>
+                    <h3>Delivery Date: {{ order.delivery_date |date:"D M Y" }}</h3>
+                    <h3>Quantity: {{ order.quantity }}</h3>
+                    <h3>Billing Address:</h3>
+                    <h4>City: {{ order.billing_address.city }}</h4>
+                    <h4>Line1: {{ order.billing_address.line1 }}</h4>
+                    <h4>Phone Number: {{ order.billing_address.phone_number }}</h4>
+                    <h3>Order Total: {% order_total order.pk %}JD </h3>
+                </div>
+
+            </div>
+        {% endfor %}
+
+    </div>
 {% endblock %}

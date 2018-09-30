@@ -50,10 +50,10 @@
     -moz-background-color: rgba(0, 0, 0, 0.6);
     -o-background-color: rgba(0, 0, 0, 0.6);
     background-size: cover;
-    min-height: 490px;
+    min-height: 620px;
     width: 50%;
     margin-left: 25%;
-    padding-top: 50px;
+    padding-top: 20px;
 }
 table td{
     padding-top: 50px;
@@ -71,7 +71,7 @@ table td{
     -moz-background-color: rgba(0, 0, 0, 0.3);
     -o-background-color: rgba(0, 0, 0, 0.3);
     background-size: cover;
-    min-height: 340px;
+    min-height: 230px;
     width: 90%;
     padding-top: 20px;
     padding-left: 20px;
@@ -117,5 +117,44 @@ table td{
     color: white;
     font-size: 18px;
     font-weight: bold;
-
+}
+.order-list{
+    background-color: rgba(0, 0, 0, 0.3);
+    -webkit-background-color: rgba(0, 0, 0, 0.3);
+    -moz-background-color: rgba(0, 0, 0, 0.3);
+    -o-background-color: rgba(0, 0, 0, 0.3);
+    background-size: cover;
+    min-height: 420px;
+    width:  95%;
+    padding-top: 50px;
+    padding-left: 30px;
+    margin-top: 40px;
+    margin-left: 10px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    font-style:italic ;
+}
+.profile-update{
+    background-color: rgba(0, 0, 0, 0.3);
+    -webkit-background-color: rgba(0, 0, 0, 0.3);
+    -moz-background-color: rgba(0, 0, 0, 0.3);
+    -o-background-color: rgba(0, 0, 0, 0.3);
+    background-size: cover;
+    min-height: 600px;
+    width:  50%;
+    padding-top: 20px;
+    padding-left: 20px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+.image-profile-update{
+    background-image: url('People_group_users_friends_man_user_vector.png');
+    height:600px;
+    background-repeat: no-repeat;
+    background-size: 50% 550px;
+    margin-left: 33%;
+    margin-top: 145px;
+    z-index: -8;
 }

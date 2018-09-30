@@ -1,8 +1,8 @@
 {% load staticfiles %}
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
+<html lang="en" dir="ltr" xmlns="http://www.w3.org/1999/html">
+<link>
     <meta charset="utf-8">
     <title></title>
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
@@ -30,14 +30,14 @@
             <ul class="nav navbar-nav">
                 <li><a class="navbar-brand " href="{% url 'basic_app:home' %}">Home</a></li>
                 <li><a data-backdrop="static" data-keyboard="false" class="navbar-link btn " data-toggle="modal"
-                       data-target="#createorder">+ create order</a></li>
+                       data-target="#createorder">+ Create Order</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">My Account <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="">My orders</a></li>
-                        <li><a href="{% url 'basic_app:address_list' %}">My Address</a></li>
-                        <li><a href="#">Account Setting</a></li>
+                        <li><a href="{% url 'basic_app:order_list' %}">My Orders</a></li>
+                        <li><a href="{% url 'basic_app:address_list' %}">My Addresses</a></li>
+                        <li><a href="{% url 'basic_app:user_update' pk=request.user.id %}">Account Setting</a></li>
                     </ul>
                 </li>
                 <li><a class=navbar-link>+9627985412258</a></li>
@@ -68,11 +68,11 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Create your Address</h4>
                 </div>
-                <form method="POST" action="{% url 'basic_app:address' %}">
+                <form method="POST" action="{% url 'basic_app:order' %}">
                     {% csrf_token %}
                     <div class="modal-body ">
                         <table>
-                            {% for field in order %}
+                            {% for field in order_form %}
                                 <tr>
                                     <td>{{ field.label_tag }}</td>
                                     <td>

@@ -9,10 +9,6 @@
         {% for address in address_list %}
             <div class="col-12 col-md-4 list-address">
                 <div class="address">
-                    <h1>Address {{ forloop.counter }}</h1>
-                    <h3>{{ address.user.first_name }}</h3>
-                    <h3>{{ address.user.last_name }}</h3>
-                    <h3>{{ address.pk }}</h3>
                     <div class="date">
                         <p>City: {{ address.city }}</p>
                         <p>Line 1: {{ address.line1 }}</p>
