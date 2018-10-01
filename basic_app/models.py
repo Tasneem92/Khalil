@@ -27,7 +27,7 @@ class Order(models.Model):
     delivery_date = models.DateTimeField(db_index=True)
     orderedBy = models.ForeignKey(User, on_delete=models.CASCADE, default="")
     total_incl_delivery = models.DecimalField(decimal_places=2, max_digits=12, default=0.0)
-    billing_address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    billing_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
 
     def get_absolute_url(self):
         return reverse("basic_app:order_detail", kwargs={'pk': self.pk})
