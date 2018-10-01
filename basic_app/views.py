@@ -47,23 +47,26 @@ def register(request):
 
 
 def user_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        user = authenticate(request, username=username, password=password)
-        if user:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect(reverse('basic_app:home'))
-            else:
-                return HttpResponse("Account not active")
-        else:
-            messages.error(request, "Invalid login credentials, please try again!")
-
-            return HttpResponseRedirect(reverse('index'))
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('basic_app:home'))
     else:
-        return render(request, 'basic_app/index.html', {})
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+
+            user = authenticate(request, username=username, password=password)
+            if user:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect(reverse('basic_app:home'))
+                else:
+                    return HttpResponse("Account not active")
+            else:
+                messages.error(request, "Invalid login credentials, please try again!")
+
+                return HttpResponseRedirect(reverse('index'))
+        else:
+            return render(request, 'basic_app/index.html', {})
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
