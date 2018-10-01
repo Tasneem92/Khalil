@@ -18,6 +18,13 @@
                         <input type="password" name="password" class="form-control" id="exampleInputPassword1"
                                placeholder="Password" required>
                     </div>
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                     <a href="{% url 'register' %}" type="submit" value="Login" style="color:white"
                        class="btn btn-lg btn-link pull-right">Signup</a>
                     <button type="submit" value="Login" class="btn btn-lg btn-primary pull-right">Login</button>

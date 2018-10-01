@@ -4,17 +4,18 @@ from basic_app.models import Order, Address
 
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
+    password_raw = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password_raw')
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'form-control'
         self.fields['email'].widget.attrs['class'] = 'form-control'
-        self.fields['password'].widget.attrs['class'] = 'form-control'
+        self.fields['password_raw'].widget.attrs['class'] = 'form-control'
+        self.fields['password_raw'].label = "password"
         self.fields['first_name'].widget.attrs['class'] = 'form-control'
         self.fields['last_name'].widget.attrs['class'] = 'form-control'
 
